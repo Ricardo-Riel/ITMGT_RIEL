@@ -54,12 +54,13 @@ def caesar_cipher(message, shift):
     '''
     # Replace `pass` with your code. 
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    import string                                                                                        
-    messages = string.ascii_uppercase
-    shifted = messages[shift:] + messages[:shift]
-    variables = str.maketrans(messages, shifted)
-    Shifted = message.translate(variables)
-    return Shifted
+    cipher = ""
+    for i in message:
+        if i.isupper():
+            cipher = cipher + (chr((ord(i) - 65 + shift) % 26 + 65))
+        else :
+            cipher += i
+    return cipher
 
 def shift_by_letter(letter, letter_shift):
     '''Shift By Letter. 
@@ -181,7 +182,7 @@ def scytale_cipher(message, shift):
             new = message
             break
         else:
-            new = message + "_"
+            new = message + (shift - (len(message) % shift)) * str("_")
             break
     len(new) % shift == 0
     newlen = len(new)
