@@ -104,20 +104,29 @@ def tic_tac_toe(board):
     # Stay within the function. Only use the parameters as input. The function should return your answer.
     for row in board:
         if len(set(row)) == 1:
-            return row[0]
+            if row[0] =="":
+                return "NO WINNER"
+            else:
+                return row[0]
     for col in zip(*board):
         if len(set(col)) == 1:
-            return col[0]
+            if col[0] =="":
+                return "NO WINNER"
+            else:
+                return col[0]
 
     if len(set([board[i][i] for i in range(len(board))])) == 1:
-        return board[0][0]
+        if board[0][0] == "":
+             return "NO WINNER"
+        else:
+            return board[0][0]
     if len(set([board[i][len(board)-i-1] for i in range(len(board))])) == 1:
         return board[0][len(board)-1]
-    return "NO WINNNER"
+    return "NO WINNER"
 board1 = [                          
-['X','X','O'],
-['O','X','O'],
-['O','','X'],
+['','X','O'],
+['O','','O'],
+['O','',''],
 ]
 
 board2 = [
@@ -145,18 +154,17 @@ board5 = [
 ]
 
 board6 = [
-['X','X','O'],
-['O','X','O'],
-['X','',''],
+['X','X','X'],
+['O','','O'],
+['','',''],
 ]
 
 board7 = [
 ['X','X','O',''],
-['O','X','O','O'],
-['X','','','O'],
+['O','X','O',''],
+['X','','',''],
 ['O','X','','']
 ]
-
 def eta(first_stop, second_stop, route_map):
     '''ETA. 
     25 points.
@@ -183,26 +191,19 @@ def eta(first_stop, second_stop, route_map):
     '''
     # Replace `pass` with your code. 
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    legs = {
-     ("upd","admu"):{
-         "travel_time_mins":10
-     },
-     ("admu","dlsu"):{
-         "travel_time_mins":35
-     },
-     ("dlsu","upd"):{
-         "travel_time_mins":55
-     }
-}
-
-    for k in route_map.keys():
-        if first_stop in k[0] and second_stop in k[1]:
-            return (route_map[first_stop, second_stop]["travel_time_mins"])
-    for k in route_map.keys():
-        if first_stop in k[1] and second_stop in k[0]:
-            return  (sum([k["travel_time_mins"] for k in route_map.values()])) -(route_map[second_stop, first_stop]["travel_time_mins"])
-    for k in route_map.keys():
-        if first_stop==second_stop:
-            return (sum([k["travel_time_mins"] for k in route_map.values()]))
-eta("upd", "dlsu", legs)
+    
+    to_go = first_stop
+    travel_time = 0
+    while True:
+        next = [k[1] for k in route_map if k[0] == to_go]
+        if next:
+            next = next[0]  
+            travel_time += route_map[(to_go, next)]['travel_time_mins']
+            if next == second_stop:
+                return(travel_time)
+                break
+            to_go = next
+        else:
+            return(second_stop)
+            break
     
